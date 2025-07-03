@@ -1,0 +1,47 @@
+plugins {
+    id "com.android.application"
+    id 'com.google.gms.google-services' // Firebase plugin
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin" // Flutter plugin
+}
+
+android {
+    namespace = "com.example.playnation"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId = "com.example.playnation"
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+        multiDexEnabled true // ✅ Added for Firebase Auth stability
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:32.8.0') // ✅ Use Firebase BoM for version sync
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'androidx.multidex:multidex:2.0.1' // ✅ Required for large apps using Firebase
+}
