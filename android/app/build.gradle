@@ -11,22 +11,24 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = "17"
     }
+
 
     defaultConfig {
         applicationId = "com.example.playnation"
-        minSdk = flutter.minSdkVersion
+        minSdk = 23 // ✅ REQUIRED for firebase-auth:23.2.1
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-        multiDexEnabled true // ✅ Added for Firebase Auth stability
+        multiDexEnabled true
     }
+
 
     buildTypes {
         release {
@@ -40,7 +42,7 @@ flutter {
 }
 
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:32.8.0') // ✅ Use Firebase BoM for version sync
+    implementation platform('com.google.firebase:firebase-bom:33.16.0') // ✅ Use Firebase BoM for version sync
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'androidx.multidex:multidex:2.0.1' // ✅ Required for large apps using Firebase

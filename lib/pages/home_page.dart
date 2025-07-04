@@ -6,10 +6,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'host_game_page.dart';
 import 'join_game_page.dart';
 import 'add_turf_page.dart';
+import 'browse_turf_page.dart';
 import '../auth/login_page.dart';
 import 'joined_games_page.dart';
 import 'my_hosted_games_page.dart';
 import 'profile_page.dart';
+import 'turf_owner_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,6 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _userName = 'Player';
+  bool isOwnerView = false;
 
   @override
   void initState() {
@@ -111,6 +114,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (isOwnerView) {
+      return TurfOwnerPage(onBack: () => setState(() => isOwnerView = false));
+    }
+
     final currentUser = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
@@ -233,12 +240,28 @@ class _HomePageState extends State<HomePage> {
                         _buildActionButton('Host Game', Icons.add, () {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => HostGamePage()));
                         }),
-                        _buildActionButton('View Profile', Icons.person_outline, () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
+                        _buildActionButton('Browse Turfs', Icons.explore, () {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => BrowseTurfsPage()));
                         }),
-                        _buildActionButton('Turf Listings', Icons.list_alt, () {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => AddTurfPage()));
+                        _buildActionButton('Your Profile', Icons.person_outline, () {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => ProfilePage()));
                         }),
+                      ],
+                    ),
+
+                    SizedBox(height: 16),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Switch to Turf Owner', style: GoogleFonts.poppins()),
+                        Switch(
+                          value: isOwnerView,
+                          activeColor: Color(0xFF4CAF50),
+                          onChanged: (val) {
+                            setState(() => isOwnerView = val);
+                          },
+                        ),
                       ],
                     ),
                   ],
